@@ -1,0 +1,104 @@
+{% extends 'base/main.html' %} {% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<div class="header-bar">
+    <div>
+        <h1>Hello {{request.user|title}}</h1>
+        <img src="https://serving.photos.photobox.com/579043161dee4cc478bd46d08dd9ea9481b50c1427a9a77ef150fd3edbc56a73bd2ca474.jpg" alt="Example Image" >
+        <h3 style="margin:0">Nhập tên phong cách, tag như hình trên để tìm kiếm. Nếu nhiều phong cách, tag hãy viết phong cách trước, tag sau</h3>
+
+        <h3 style="margin:0">Ví dụ: c.quý_d.thương_sứ nữ</h3>
+        {% comment %} <h3 style="margin:0">You have <i>{{count}}</i> item{{ count|pluralize:"s" }}</h3> {% endcomment %}
+    </div>
+
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}">Logout</a> {% else %}
+    <a href="{% url 'login' %}">Login</a> {% endif %}
+</div>
+
+
+<div id="search-add-wrapper">
+    <form method="GET" style="display: flex;">
+        <input type='text' name='search-area' placeholder="Tìm Trang Phục" value="{{search_input}}">
+        <input id="search-button" class="button" type="submit" value='Tìm kiếm'>
+    </form>
+    {% comment %} {% if tasks|length > 0 %}
+    <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
+    {% endif %} {% endcomment %}
+</div>
+
+
+<!-- Hidden form. Form submits new item positions -->
+<form style="display: none;" id="reorderForm" method="post" action="{% url 'task-reorder' %}">
+    {% csrf_token %}
+    <input type="hidden" id="positionInput" name="position">
+</form>
+
+
+<div id="tasklist" class="task-items-wrapper">
+    {% for task in tasks %}
+    <div class="task-wrapper" data-position="{{task.pk}}">
+        <div class="task-title">
+            {% if task.complete %}
+            <div class="task-complete-icon"></div>
+            <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i> {% else %}
+            <div class="task-incomplete-icon"></div>
+            <a  href="{% url 'task-update' task.id %}">{{task}}</a> {% endif %}
+        </div>
+        <div class="task-controls">
+            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
+            <span class="handle">&nbsp;&#10247;</span>
+        </div>
+    </div>
+
+    {% empty %}
+    <div style="text-align: center; padding-bottom: 10px; line-height: 1em;">
+        <h3>No new tasks are created.</h3>
+        <h3>Create a <a style="text-decoration: none; color: #e53935;" href="{% url 'task-create' %}">New task</a> ! </h3>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    var taskList = document.getElementById("tasklist");
+    var reorderForm = document.getElementById("reorderForm");
+    var positionInput = document.getElementById("positionInput");
+
+    let sortable = Sortable.create(taskList, {
+        handle: '.handle',
+        ghostClass: 'dropArea',
+        chosenClass: 'selectedTask',
+
+    });
+
+
+    {% comment %} document.addEventListener("DOMcontentLoaded", function(event) {
+
+            var tasklist = document.getElementById("tasklist");
+            tasklist.classList.add("hidden");
+        }); {% endcomment %}
+            // Lắng nghe sự kiện ấn nút tìm kiếm
+    document.getElementById("search-button").addEventListener("click", function() {
+            var tasklist = document.getElementById("tasklist");
+            tasklist.classList.remove("hidden");
+            });
+
+
+
+
+    function reordering() {
+        const rows = document.getElementsByClassName("task-wrapper");
+        let pos = [];
+        for (let row of rows) {
+            pos.push(row.dataset.position);
+        }
+        console.log(pos.join(","))
+        positionInput.value = pos.join(',');
+        reorderForm.submit();
+    }
+
+    document.ondrop = reordering
+
+</script>
+
+{% endblock content %}
