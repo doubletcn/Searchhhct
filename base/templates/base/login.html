@@ -1,11 +1,11 @@
 {% extends 'base/main.html' %}
 {% block content %}
 
-<div class="header-bar">
+<div class="header-bar login">
     <h1>Login</h1>
 </div>
 
-<div class="card-body">
+<div class="card-body login1">
     <form method="POST">
         {% csrf_token %}
         {{form.as_p}}

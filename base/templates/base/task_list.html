@@ -3,11 +3,15 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <div class="header-bar">
     <div>
-        <h1>Hello {{request.user|title}}</h1>
+        <h1>Welcome to Yang Hồ-Tử hàn 2</h1>
         <img src="https://serving.photos.photobox.com/579043161dee4cc478bd46d08dd9ea9481b50c1427a9a77ef150fd3edbc56a73bd2ca474.jpg" alt="Example Image" >
         <h3 style="margin:0">Nhập tên phong cách, tag như hình trên để tìm kiếm. Nếu nhiều phong cách, tag hãy viết phong cách trước, tag sau</h3>
 
-        <h3 style="margin:0">Ví dụ: c.quý_d.thương_sứ nữ</h3>
+        <h3 style="margin:0">Ví dụ:</h3>
+        <h4 style="margin:0">Tìm theo phong cách: c.quý</h4>
+        <h4 style="margin:0">Tìm theo tag: hí.p</h4>
+        <h4 style="margin:0">Tìm theo 2 phong cách: c.quý_d.thương</h4>
+        <h4 style="margin:0">Tìm theo 2 phong cách, tag: c.quý_d.thương_sứ nữ</h4>
         {% comment %} <h3 style="margin:0">You have <i>{{count}}</i> item{{ count|pluralize:"s" }}</h3> {% endcomment %}
     </div>
 
@@ -19,7 +23,7 @@
 
 <div id="search-add-wrapper">
     <form method="GET" style="display: flex;">
-        <input type='text' name='search-area' placeholder="Tìm Trang Phục" value="{{search_input}}">
+        <input type='text' name='search-area' placeholder="Nhập phong cách, tag" value="{{search_input}}">
         <input id="search-button" class="button" type="submit" value='Tìm kiếm'>
     </form>
     {% comment %} {% if tasks|length > 0 %}
@@ -38,17 +42,13 @@
 <div id="tasklist" class="task-items-wrapper">
     {% for task in tasks %}
     <div class="task-wrapper" data-position="{{task.pk}}">
-        <div class="task-title">
-            {% if task.complete %}
-            <div class="task-complete-icon"></div>
-            <i><s><a href="{% url 'task-update' task.id %}">{{task}}</a></s></i> {% else %}
-            <div class="task-incomplete-icon"></div>
-            <a  href="{% url 'task-update' task.id %}">{{task}}</a> {% endif %}
+        <div class="task-title" style="font-weight:bold; padding-left: 40px;">
+            {{task}}
         </div>
-        <div class="task-controls">
+        {% comment %} <div class="task-controls">
             <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
             <span class="handle">&nbsp;&#10247;</span>
-        </div>
+        </div> {% endcomment %}
     </div>
 
     {% empty %}
