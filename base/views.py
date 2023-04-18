@@ -9,6 +9,8 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib import messages
 
 # Imports for Reordering Feature
 from django.views import View
@@ -57,11 +59,13 @@ class RegisterPage(FormView):
 #         return render(request, 'task_list.html', context)
 
 
-class TaskListView(ListView):
+class TaskListView(SuccessMessageMixin, ListView):
     model = Task
     template_name = 'task_list.html'
     context_object_name = 'items'
     paginate_by = 5
+    success_message = "Các trang phục có phong cách, tag: {} là"
+    # fail_message = "Không có trang phục có phong cách: {}"
 
     def get_queryset(self):
         tag_query = self.request.GET.get('tags')
@@ -71,9 +75,14 @@ class TaskListView(ListView):
             for tag in tags[1:]:
                 queryset = queryset.filter(tags__contains=tag)
             items = queryset.distinct()
+            if len(items) == 0:
+                messages.warning(self.request, "")
+            else:
+                messages.success(self.request, self.success_message.format(tag_query))
         else:
             items = Task.objects.all()
         return items
+
 # class TaskList(ListView):
 #     model = Task
 #     context_object_name = 'tasks'

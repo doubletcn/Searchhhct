@@ -4,7 +4,7 @@
 <div class="header-bar">
     <div>
         <h1>Welcome to Yang Hồ-Tử hàn 2</h1>
-        <h1>Mình là Choiyena chơi app</h1>
+        <h1>Mình là ChoiYena chơi Apps</h1>
         <img src="https://serving.photos.photobox.com/579043161dee4cc478bd46d08dd9ea9481b50c1427a9a77ef150fd3edbc56a73bd2ca474.jpg" alt="Example Image" >
         <h3 style="margin:0">Nhập tên phong cách, tag y hệt như hình trên để tìm kiếm. Nhiều phong cách, tag thì ngăn cách nhau bằng dấu phẩy</h3>
 
@@ -29,7 +29,13 @@
         <input type="text" id="tags" name="tags">
         <button type="submit">Tìm Kiếm</button>
     </form>
+
     {% if items %}
+        {% if messages %}
+        {% for message in messages %}
+            <h4 style="color: blue;">{{ message }}</h4>
+        {% endfor %}
+        {% endif %}
         <ul>
             {% for item in items %}
                 <li>{{ item.title }}</li>
@@ -53,7 +59,7 @@
             </nav>
         {% endif %}
     {% else %}
-        <p>No tasks found.</p>
+    <h4 style="color: red;">Không có trang phục có phong cách: {{ request.GET.tags }}</h4>
     {% endif %}
 </div>
 
