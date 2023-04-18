@@ -57,38 +57,40 @@ class RegisterPage(FormView):
 #         return render(request, 'task_list.html', context)
 
 
-
-class TaskList(LoginRequiredMixin, ListView):
+class TaskListView(ListView):
     model = Task
-    context_object_name = 'tasks'
+    template_name = 'task_list.html'
+    context_object_name = 'items'
+    paginate_by = 5
 
-    def get(self, request):
-        form = ClothingFilterForm(request.GET)
-        if form.is_valid():
-            # tags = form.cleaned_data.get('tags')
-            # tags = request.GET.getlist('tags')
-            # items = Task.objects.filter(tags__in=tags).distinct()
-            tags = form.cleaned_data.get('tags')
-            tag_list = [tag.strip() for tag in tags.split(',')]
-            items = Task.objects.filter(tags__in=tag_list).distinct()
+    def get_queryset(self):
+        tag_query = self.request.GET.get('tags')
+        if tag_query:
+            tags = [tag.strip() for tag in tag_query.split(',')]
+            queryset = Task.objects.filter(tags__contains=tags[0])
+            for tag in tags[1:]:
+                queryset = queryset.filter(tags__contains=tag)
+            items = queryset.distinct()
         else:
             items = Task.objects.all()
-        context = {'form': form, 'items': items}
-        return render(request, 'base/task_list.html', context)
+        return items
+# class TaskList(ListView):
+#     model = Task
+#     context_object_name = 'tasks'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tasks'] = context['tasks'].filter(user=self.request.user)
-        # context['count'] = context['tasks'].filter(complete=False).count()
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['tasks'] = context['tasks'].filter(user=self.request.user)
+#         context['count'] = context['tasks'].filter(complete=False).count()
 
-        search_input = self.request.GET.get('search-area') or ''
-        if search_input:
-            context['tasks'] = context['tasks'].filter(
-                title__contains=search_input)
+#         search_input = self.request.GET.get('search-area') or ''
+#         if search_input:
+#             context['tasks'] = context['tasks'].filter(
+#                 title__contains=search_input)
 
-        context['search_input'] = search_input
+#         context['search_input'] = search_input
 
-        return context
+#         return context
 
 
 class TaskDetail(LoginRequiredMixin, DetailView):

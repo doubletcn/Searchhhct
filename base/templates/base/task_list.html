@@ -4,14 +4,13 @@
 <div class="header-bar">
     <div>
         <h1>Welcome to Yang Hồ-Tử hàn 2</h1>
+        <h1>Mình là Choiyena chơi app</h1>
         <img src="https://serving.photos.photobox.com/579043161dee4cc478bd46d08dd9ea9481b50c1427a9a77ef150fd3edbc56a73bd2ca474.jpg" alt="Example Image" >
-        <h3 style="margin:0">Nhập tên phong cách, tag như hình trên để tìm kiếm. Nếu nhiều phong cách, tag hãy viết phong cách trước, tag sau</h3>
+        <h3 style="margin:0">Nhập tên phong cách, tag y hệt như hình trên để tìm kiếm. Nhiều phong cách, tag thì ngăn cách nhau bằng dấu phẩy</h3>
 
-        <h3 style="margin:0">Ví dụ:</h3>
-        <h4 style="margin:0">Tìm theo phong cách: c.quý</h4>
-        <h4 style="margin:0">Tìm theo tag: hí.p</h4>
-        <h4 style="margin:0">Tìm theo 2 phong cách: c.quý_d.thương</h4>
-        <h4 style="margin:0">Tìm theo 2 phong cách, tag: c.quý_d.thương_sứ nữ</h4>
+        <h3 style="margin:0">Ví dụ: d.thương,c.quý chứ ko phải dễ thương, cao quý</h3>
+        <h3 style="margin:0">tây.p, c.quý chứ ko phải tây phương, cao quý</h3>
+
         {% comment %} <h3 style="margin:0">You have <i>{{count}}</i> item{{ count|pluralize:"s" }}</h3> {% endcomment %}
     </div>
 
@@ -22,56 +21,40 @@
 
 
 <div id="search-add-wrapper">
-    {% comment %} <form method="GET" style="display: flex;">
-        <input type='text' name='search-area' placeholder="Nhập phong cách, tag" value="{{search_input}}">
-        <input id="search-button" class="button" type="submit" value='Tìm kiếm'>
-    </form> {% endcomment %}
-    {% comment %} {% if tasks|length > 0 %}
-    <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
-    {% endif %} {% endcomment %}
-    <h1>Clothing</h1>
-    <form method="get">
-      <p>
-        <label>Tags:</label>
-      </p>
-      <div id="tags">
-        <div>
-            <label for="tags_0">
-                <input type="checkbox" name="tags" value="d.thương, c.quý" id="tags_0">d.thương, c.quý
-            </label>
-        </div>
-        <div>
-            <label for="tags_4">
-                <input type="checkbox" name="tags" value="d.thương" id="tags_4">d.thương
-            </label>
-        </div>
-        <div>
-            <label for="tags_1">
-                <input type="checkbox" name="tags" value="c.quý" id="tags_1">c.quý
-            </label>
-        </div>
-        <div>
-            <label for="tags_2">
-                <input type="checkbox" name="tags" value="n.nhàng" id="tags_2">n.nhàng
-            </label>
-        </div>
-        <div>
-            <label for="tags_3">
-                <input type="checkbox" name="tags" value="t.thống" id="tags_3">t.thống
-            </label>
-        </div>
 
-      </div>
-      <p></p>
-      <input type="submit" value="Search"><br>
+    <h3>Tìm kiếm trang phục trong lưu quang điện, lạc tinh viện</h3>
+
+    <form method="GET" action="{% url 'task_list' %}">
+        <label for="tags">Nhập Phong cách, Tags:</label>
+        <input type="text" id="tags" name="tags">
+        <button type="submit">Tìm Kiếm</button>
     </form>
-    <ul>
-    {% for item in items %}
-      <li>{{ item }}</li>
-    {% empty %}
-      <li>No items found</li>
-    {% endfor %}
-    </ul>
+    {% if items %}
+        <ul>
+            {% for item in items %}
+                <li>{{ item.title }}</li>
+            {% endfor %}
+        </ul>
+        {% if is_paginated %}
+            <nav>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Previous</a>
+                {% endif %}
+
+                <span class="current-page">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Last</a>
+                {% endif %}
+            </nav>
+        {% endif %}
+    {% else %}
+        <p>No tasks found.</p>
+    {% endif %}
 </div>
 
 
@@ -82,25 +65,7 @@
 </form>
 
 
-<div id="tasklist" class="task-items-wrapper">
-    {% for task in tasks %}
-    <div class="task-wrapper" data-position="{{task.pk}}">
-        <div class="task-title" style="font-weight:bold; padding-left: 40px;">
-            {{task}}
-        </div>
-        {% comment %} <div class="task-controls">
-            <a class="delete-link" href="{% url 'task-delete' task.id %}">&#215;</a>
-            <span class="handle">&nbsp;&#10247;</span>
-        </div> {% endcomment %}
-    </div>
 
-    {% empty %}
-    <div style="text-align: center; padding-bottom: 10px; line-height: 1em;">
-        <h3>No new tasks are created.</h3>
-        <h3>Create a <a style="text-decoration: none; color: #e53935;" href="{% url 'task-create' %}">New task</a> ! </h3>
-    </div>
-    {% endfor %}
-</div>
 
 <script>
     var taskList = document.getElementById("tasklist");
@@ -115,16 +80,6 @@
     });
 
 
-    {% comment %} document.addEventListener("DOMcontentLoaded", function(event) {
-
-            var tasklist = document.getElementById("tasklist");
-            tasklist.classList.add("hidden");
-        }); {% endcomment %}
-            // Lắng nghe sự kiện ấn nút tìm kiếm
-    document.getElementById("search-button").addEventListener("click", function() {
-            var tasklist = document.getElementById("tasklist");
-            tasklist.classList.remove("hidden");
-            });
 
 
 
