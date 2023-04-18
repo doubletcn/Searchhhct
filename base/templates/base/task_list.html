@@ -22,13 +22,56 @@
 
 
 <div id="search-add-wrapper">
-    <form method="GET" style="display: flex;">
+    {% comment %} <form method="GET" style="display: flex;">
         <input type='text' name='search-area' placeholder="Nhập phong cách, tag" value="{{search_input}}">
         <input id="search-button" class="button" type="submit" value='Tìm kiếm'>
-    </form>
+    </form> {% endcomment %}
     {% comment %} {% if tasks|length > 0 %}
     <a id="add-link" href="{% url 'task-create' %}">&#x2b;</a>
     {% endif %} {% endcomment %}
+    <h1>Clothing</h1>
+    <form method="get">
+      <p>
+        <label>Tags:</label>
+      </p>
+      <div id="tags">
+        <div>
+            <label for="tags_0">
+                <input type="checkbox" name="tags" value="d.thương, c.quý" id="tags_0">d.thương, c.quý
+            </label>
+        </div>
+        <div>
+            <label for="tags_4">
+                <input type="checkbox" name="tags" value="d.thương" id="tags_4">d.thương
+            </label>
+        </div>
+        <div>
+            <label for="tags_1">
+                <input type="checkbox" name="tags" value="c.quý" id="tags_1">c.quý
+            </label>
+        </div>
+        <div>
+            <label for="tags_2">
+                <input type="checkbox" name="tags" value="n.nhàng" id="tags_2">n.nhàng
+            </label>
+        </div>
+        <div>
+            <label for="tags_3">
+                <input type="checkbox" name="tags" value="t.thống" id="tags_3">t.thống
+            </label>
+        </div>
+
+      </div>
+      <p></p>
+      <input type="submit" value="Search"><br>
+    </form>
+    <ul>
+    {% for item in items %}
+      <li>{{ item }}</li>
+    {% empty %}
+      <li>No items found</li>
+    {% endfor %}
+    </ul>
 </div>
 
 

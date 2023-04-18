@@ -3,6 +3,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.urls import reverse_lazy
+from django.db.models import Q
 
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,7 +16,7 @@ from django.shortcuts import redirect
 from django.db import transaction
 
 from .models import Task
-from .forms import PositionForm
+from .forms import PositionForm, ClothingFilterForm
 
 
 class CustomLoginView(LoginView):
@@ -44,10 +45,36 @@ class RegisterPage(FormView):
             return redirect('tasks')
         return super(RegisterPage, self).get(*args, **kwargs)
 
+# class ClothingListView(View):
+#     def get(self, request):
+#         form = ClothingFilterForm(request.GET)
+#         if form.is_valid():
+#             tags = form.cleaned_data.get('tags')
+#             items = Task.objects.filter(tags__in=tags).distinct()
+#         else:
+#             items = Task.objects.all()
+#         context = {'form': form, 'items': items}
+#         return render(request, 'task_list.html', context)
+
+
 
 class TaskList(LoginRequiredMixin, ListView):
     model = Task
     context_object_name = 'tasks'
+
+    def get(self, request):
+        form = ClothingFilterForm(request.GET)
+        if form.is_valid():
+            # tags = form.cleaned_data.get('tags')
+            # tags = request.GET.getlist('tags')
+            # items = Task.objects.filter(tags__in=tags).distinct()
+            tags = form.cleaned_data.get('tags')
+            tag_list = [tag.strip() for tag in tags.split(',')]
+            items = Task.objects.filter(tags__in=tag_list).distinct()
+        else:
+            items = Task.objects.all()
+        context = {'form': form, 'items': items}
+        return render(request, 'base/task_list.html', context)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
