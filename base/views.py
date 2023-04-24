@@ -71,9 +71,9 @@ class TaskListView(SuccessMessageMixin, ListView):
         tag_query = self.request.GET.get('tags')
         if tag_query:
             tags = [tag.strip() for tag in tag_query.split(',')]
-            queryset = Task.objects.filter(tags__contains=tags[0])
+            queryset = Task.objects.filter(tags__icontains=tags[0].lower())
             for tag in tags[1:]:
-                queryset = queryset.filter(tags__contains=tag)
+                queryset = queryset.filter(tags__icontains=tag.lower())
             items = queryset.distinct()
             if len(items) == 0:
                 messages.warning(self.request, "")
