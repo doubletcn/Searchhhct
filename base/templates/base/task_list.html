@@ -44,8 +44,8 @@
         {% if is_paginated %}
             <nav>
                 {% if page_obj.has_previous %}
-                    <a href="?page=1{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">First</a>
-                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Previous</a>
+                    <a href="?page=1{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Trang Đầu</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Trang Trước</a>
                 {% endif %}
 
                 <span class="current-page">
@@ -53,8 +53,8 @@
                 </span>
 
                 {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Last</a>
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Trang Sau</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.tags %}&tags={{ request.GET.tags }}{% endif %}">Trang Cuối</a>
                 {% endif %}
             </nav>
         {% endif %}
