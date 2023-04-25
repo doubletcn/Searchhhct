@@ -3,29 +3,30 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <div class="header-bar">
     <div>
-        <h1>Welcome to Yang Hồ-Tử hàn 2</h1>
-        <h1>Mình là ChoiYena chơi Apps</h1>
+        <h1>App Tìm Kiếm Trang Phục</h1>
+        <h2>Tạo bởi YenaChoi chơi Apps-Tử hàn 2</h2>
         <img src="https://serving.photos.photobox.com/579043161dee4cc478bd46d08dd9ea9481b50c1427a9a77ef150fd3edbc56a73bd2ca474.jpg" alt="Example Image" >
-        <h3 style="margin:0">Nhập tên phong cách, tag y hệt như hình trên để tìm kiếm. Nhiều phong cách, tag thì ngăn cách nhau bằng dấu phẩy</h3>
+        <h3 style="margin:0">Nhập tên phong cách, tag y hệt như hình trên để tìm kiếm.</br>
+            Nhập nhiều từ khóa để có kết quả tìm kiếm chính xác nhất, </br>Các từ khóa ngăn cách nhau bằng dấu phẩy</h3>
 
-        <h3 style="margin:0">Ví dụ: tây.p, d.thương, c.quý</h3>
+        <h3 style="margin:0">Ví dụ: giày, tây.p, d.thương hoặc lqd,giày,....</h3>
 
 
         {% comment %} <h3 style="margin:0">You have <i>{{count}}</i> item{{ count|pluralize:"s" }}</h3> {% endcomment %}
     </div>
 
-    {% if request.user.is_authenticated %}
+    {% comment %} {% if request.user.is_authenticated %}
     <a href="{% url 'logout' %}">Logout</a> {% else %}
-    <a href="{% url 'login' %}">Login</a> {% endif %}
+    <a href="{% url 'login' %}">Login</a> {% endif %} {% endcomment %}
 </div>
 
 
 <div id="search-add-wrapper">
 
-    <h3>Tìm kiếm trang phục trong lưu quang điện, lạc tinh viện</h3>
+    <h3>Tìm kiếm trang phục trong lqd, lạc tinh viện, llp mùa 3</h3>
 
     <form method="GET" action="{% url 'task_list' %}">
-        <label for="tags">Nhập Phong cách, Tags:</label>
+        <label for="tags">Nhập Từ Khóa:</label>
         <input type="text" id="tags" name="tags">
         <button type="submit">Tìm Kiếm</button>
     </form>
@@ -59,7 +60,7 @@
             </nav>
         {% endif %}
     {% else %}
-    <h4 style="color: red;">Không có trang phục có phong cách: {{ request.GET.tags }}</h4>
+    <h4 style="color: red;">Không có trang phục có từ khóa: {{ request.GET.tags }}</h4>
     {% endif %}
 </div>
 

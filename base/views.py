@@ -21,13 +21,13 @@ from .models import Task
 from .forms import PositionForm, ClothingFilterForm
 
 
-class CustomLoginView(LoginView):
-    template_name = 'base/login.html'
-    fields = '__all__'
-    redirect_authenticated_user = True
+# class CustomLoginView(LoginView):
+#     template_name = 'base/login.html'
+#     fields = '__all__'
+#     redirect_authenticated_user = True
 
-    def get_success_url(self):
-        return reverse_lazy('tasks')
+#     def get_success_url(self):
+#         return reverse_lazy('tasks')
 
 
 class RegisterPage(FormView):
@@ -63,8 +63,8 @@ class TaskListView(SuccessMessageMixin, ListView):
     model = Task
     template_name = 'task_list.html'
     context_object_name = 'items'
-    paginate_by = 5
-    success_message = "Các trang phục có phong cách, tag: {} là"
+    paginate_by = 10
+    success_message = "Các trang phục có từ khóa: {} là"
     # fail_message = "Không có trang phục có phong cách: {}"
 
     def get_queryset(self):
