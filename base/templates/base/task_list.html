@@ -1,11 +1,12 @@
 {% extends 'base/main.html' %} {% block content %}
-
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+{% load static %}
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script> {% endcomment %}
 <div class="header-bar">
     <div>
         <h1>App Tìm Kiếm Trang Phục</h1>
         <h2>Tạo bởi YenaChoi chơi Apps-Tử hàn 2</h2>
-        <img src="https://serving.photos.photobox.com/579043161dee4cc478bd46d08dd9ea9481b50c1427a9a77ef150fd3edbc56a73bd2ca474.jpg" alt="Example Image" >
+        {% comment %} <img src="https://serving.photos.photobox.com/579043161dee4cc478bd46d08dd9ea9481b50c1427a9a77ef150fd3edbc56a73bd2ca474.jpg" alt="Example Image" > {% endcomment %}
+        <img src="{% static '/img/form-type.jpg' %}" alt="abc">
         <h3 style="margin:0">Nhập tên phong cách, tag y hệt như hình trên để tìm kiếm.</br>
             Nhập nhiều từ khóa để có kết quả tìm kiếm chính xác nhất, </br>Các từ khóa ngăn cách nhau bằng dấu phẩy</h3>
 
